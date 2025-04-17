@@ -4,47 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Calculator (Javascript)</title>
+
+    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="contain">
-        <div class="calculator">
-            <form action="">
-                <div class="display">
-                    <input type="text" name="display">
-                </div>
-                <div>
-                    <input type="button" value="AC" onclick="display.value = ''" class="operator">
-                    <input type="button" value="DE" onclick="display.value = display.value.toString().slice(0, -1)" class="operator">
-                    <input type="button" value="." onclick="display.value += '.'" class="operator">
-                    <input type="button" value="/" onclick="display.value += '/'" class="operator">
-                </div>
-                <div>
-                    <input type="button" value="7" onclick="display.value += '7'">
-                    <input type="button" value="8" onclick="display.value += '8'">
-                    <input type="button" value="9" onclick="display.value += '9'">
-                    <input type="button" value="x" onclick="display.value += '*'" class="operator">
-                </div>
-                <div>
-                    <input type="button" value="4" onclick="display.value += '4'">
-                    <input type="button" value="5" onclick="display.value += '5'">
-                    <input type="button" value="6" onclick="display.value += '6'">
-                    <input type="button" value="-" onclick="display.value += '-'" class="operator">
-                </div>
-                <div>
-                    <input type="button" value="1" onclick="display.value += '1'">
-                    <input type="button" value="2" onclick="display.value += '2'">
-                    <input type="button" value="3" onclick="display.value += '3'">
-                    <input type="button" value="+" onclick="display.value += '+'" class="operator">
-                </div>
-                <div>
-                    <input type="button" value="0" onclick="display.value += '0'">
-                    <input type="button" value="00" onclick="display.value += '00'">
-                    <input type="button" value="000" onclick="display.value += '000'">
-                    <input type="button" value="=" onclick="display.value = eval(display.value)" class="equal">
-                </div>
-            </form>
+
+    <!-- Theme selector with cog toggle button and color options -->
+    <div class="theme-selector">
+        <button id="theme-toggle">
+            ⚙️
+        </button>
+
+        <!-- Hidden by default, shows when toggled -->
+        <div class="theme-options hidden">
+            <!-- Theme buttons with custom colors using CSS variables -->
+            <button class="theme-btn" data-theme="default" style="--color:#A0B9C1"></button>
+            <button class="theme-btn" data-theme="1" style="--color:#A34747"></button>
+            <button class="theme-btn" data-theme="2" style="--color:#9C7462"></button>
+            <button class="theme-btn" data-theme="3" style="--color:#7DA88C"></button>
+            <button class="theme-btn" data-theme="4" style="--color:#9C8CB9"></button>
         </div>
     </div>
+
+    <!-- Main calculator container -->
+    <div class="contain">
+        <div id="calc-wrapper">
+
+            <!-- Calculator UI -->
+            <div class="calculator">
+                <form action="">
+                    <!-- Display area (disabled input field) -->
+                    <div class="display">
+                        <input type="text" id="display" disabled>
+                    </div>
+
+                    <!-- Calculator buttons in rows -->
+                    <div>
+                        <button type="button" data-value="AC" class="operator">AC</button>
+                        <button type="button" data-value="DE" class="operator">DE</button>
+                        <button type="button" data-value="." class="operator">.</button>
+                        <button type="button" data-value="/" class="operator">/</button>
+                    </div>
+                    <div>
+                        <button type="button" data-value="7">7</button>
+                        <button type="button" data-value="8">8</button>
+                        <button type="button" data-value="9">9</button>
+                        <button type="button" data-value="*" class="operator">*</button>
+                    </div>
+                    <div>
+                        <button type="button" data-value="4">4</button>
+                        <button type="button" data-value="5">5</button>
+                        <button type="button" data-value="6">6</button>
+                        <button type="button" data-value="-" class="operator">-</button>
+                    </div>
+                    <div>
+                        <button type="button" data-value="1">1</button>
+                        <button type="button" data-value="2">2</button>
+                        <button type="button" data-value="3">3</button>
+                        <button type="button" data-value="+" class="operator">+</button>
+                    </div>
+                    <div>
+                        <button type="button" data-value="0">0</button>
+                        <button type="button" data-value="00">00</button>
+
+                        <!-- Memory/history toggle button -->
+                        <button type="button" id="toggle-history" class="operator">M</button>
+
+                        <!-- Evaluate expression -->
+                        <button type="button" data-value="=" class="equal">=</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- History panel -->
+            <div id="history-box">
+                <h1>History</h1>
+                <ul id="history-list"></ul> <!-- List populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+    <!-- Link to JavaScript logic -->
+    <script src="script.js"></script>
 </body>
 </html>

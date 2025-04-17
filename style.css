@@ -1,10 +1,135 @@
+/* ========== GLOBAL STYLE ========= */
 *{
-    margin: auto;
+    margin: auto; /* Centers content by default (may override content unintentionally) */
     padding: 0;
     font-family: Arial, sans-serif;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Ensure padding and borders are included un total width/height */
 }
 
+/* ========== THEME SELECTOR UI ========== */
+.theme-selector{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 5; /* Ensure it appear above all elements */
+}
+
+#theme-toggle{
+    font-size: 40px;
+    margin-right: 1vh;
+    background: none;
+    border: none;
+    color: azure;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+#theme-toggle:focus{
+    outline: none; /* Remove focus border for cleaner UI */
+}
+
+#theme-toggle:hover{
+    transform: rotate(30deg); /* Adds a playful rotation on hover */
+    transition: transform 0.2s ease;
+}
+
+.theme-options{
+    position: absolute;
+    top: 8vh;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease 0.05s;
+    z-index: 1;
+    pointer-events: auto;
+    justify-content: center;
+}
+
+.theme-options.hidden{
+    opacity: 0;
+    transform: translateY(-10px); /* Slide-up effect when hidden */
+    pointer-events: none;
+}
+
+.theme-btn{
+    width: 36px;
+    height: 36px;
+    background-color: var(--color); /* Dynamic via inline variable */
+    border: 2px solid white;
+    border-radius: 50%; /* Circular buttons */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-btn:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 6px white;
+}
+
+.theme-btn:active{
+    transform: scale(0.96); /* Click feedback */
+}
+
+/* ========== THEME STYLE ========= */
+/* Each themee overrides default styles for background and text colors */
+
+/* Default Theme */
+body.theme-default{
+    background: #606060;
+}
+
+/* Theme1 - Red-based */
+body.theme-1 .contain{background: #E3E3E3;}
+body.theme-1 .calculator{background: #A34747;}
+body.theme-1 .calculator button{color: #FFF2E3;}
+body.theme-1 form button.operator{color: #2C1A17;}
+body.theme-1 form button.equal{color: #F8D1C2;}
+body.theme-1 #history-box{background: #A34747;}
+body.theme-1 #history-box li .expr{color: #2C1A17;}
+body.theme-1 #history-box li .result{color: #FFF2E3;}
+
+/* Theme2 - Brown-based */
+body.theme-2 .contain{background: #F2ECE6;}
+body.theme-2 .calculator {background: #9C7462;}
+body.theme-2 .calculator button {color: #F3E8DE;}
+body.theme-2 form button.operator{color: #2A1E1B;}
+body.theme-2 form button.equal{color: #D0C4BB;}
+body.theme-2 #history-box{background: #9C7462;}
+body.theme-2 #history-box li .expr{color: #2A1E1B;}
+body.theme-2 #history-box li .result{color: #F3E8DE;}
+  
+/* Theme3 - Jade-based */
+body.theme-3 .contain{background: #DCD6CC;}
+body.theme-3 .calculator {background: #7DA88C;}
+body.theme-3 .calculator button {color: #F0F7F3;}
+body.theme-3 form button.operator{color: #1C2B24;}
+body.theme-3 form button.equal{color: #EAE8D5;}
+body.theme-3 #history-box{background: #7DA88C;}
+body.theme-3 #history-box li .expr{color: #1C2B24;}
+body.theme-3 #history-box li .result{color: #F0F7F3;}
+  
+/* Theme4 Violet-based */
+body.theme-4 .contain{background: #FAF6ED;}
+body.theme-4 .calculator {background: #9C8CB9;}
+body.theme-4 .calculator button {color: #F8F3FA;}
+body.theme-4 form button.operator{color: #261E2E;}
+body.theme-4 form button.equal{color: #C6BADB;}
+body.theme-4 #history-box{background: #9C8CB9;}
+body.theme-4 #history-box li .expr{color: #261E2E;}
+body.theme-4 #history-box li .result{color: #F8F3FA;}
+
+/* ========== LAYOUT STRUCTURE ========== */
 .contain{
     width: 100%;
     height: 100vh;
@@ -12,29 +137,55 @@
     display: flex;
     align-content: center;
     justify-content: center;
+    position: relative;
     box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#calc-wrapper{
+    position: relative;
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    justify-content: center;
+    transition: gap 0.3s ease;
+    z-index: 2;
+}
+
+#calc-wrapper.show-history{
+    gap: 20px /* Space appear when hisotory is shown */
 }
 
 .calculator{
     background: #A0B9C1;
+    z-index: 2;
     padding: 20px;
     border-radius: 10px;
 }
 
-.calculator form input{
-    border: 1px;
-    outline: 0;
+/* ========== CALCULATOR BUTTON ========== */
+.calculator form button{
+    all: unset;
+    display: inline-block;
+    text-align: center;
     width: 60px;
     height: 60px;
     border-radius: 10px;
     box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
     background: transparent;
-    font-size: 15px;
+    font-size: 20px;
     color: azure;
     cursor: pointer;
+    font-weight: bold;
     margin: 10px;
+    transition: transform 0.05s ease, box-shadow 0.1s ease;
 }
 
+.calculator form button:active{
+    transform: scale(0.96);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== DISPLAY ========== */
 form .display{
     display: flex;
     justify-content: center;
@@ -43,15 +194,93 @@ form .display{
 
 form .display input{
     text-align: right;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 8px;
+    background: #e0f0f5;
+    color: azure;
     flex: 1;
     font-size: 45px;
-    box-shadow: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: transparent;
+    margin: 10px;
+    transition: transform 0.2s ease;
 }
 
-form input.operator{
+/* ========== BUTTON STYLES ========== */
+form button.operator{
     color: #33ffd8;
 }
 
-form input.equal{
+form button.equal{
     color: #FFCCCB;
+}
+
+/* ========== HISTORY BOX ========= */
+#history-box{
+    width: 200px;
+    max-height: 70vh;
+    background: #A0B9C1;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#history-box.show{
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#history-box h1{
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 35px;
+    color: azure;
+}
+
+#history-list li{
+    margin-bottom: 10px;
+    border-bottom: 10px;
+    padding-bottom: 5px;
+    padding-left: 2vh;
+    list-style: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#history-list li:hover{
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#history-list li span{
+    display: block;
+}
+
+#history-list li .expr{
+    color: #555;
+    font-size: 14px;
+}
+
+#history-list li .result{
+    font-weight: bold;
+    color: azure;
+    font-size: 16px;
+}
+
+/* ========= ANIMATIONS ========= */
+@keyframes popIn{
+    0%  {transform: scale(1);}
+    50% {transform: scale(1.08);}
+    100%    {transform: scale(1);}
+}
+
+.pop{
+    animation: popIn 0.25s ease;
 }
